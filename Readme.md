@@ -1,6 +1,7 @@
 # HSClass : Haskell Class with friends..
 
 Following :
+
 1. http://www.cis.upenn.edu/~cis194/spring13/
 2. http://learnyouahaskell.com/
 3. http://guide.elm-lang.org/ ( sometimes elm explains it better :) )
