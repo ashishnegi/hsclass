@@ -1,12 +1,15 @@
 # HSClass : Haskell Class with friends..
 
-Following : http://www.cis.upenn.edu/~cis194/spring13/
+Following :
+1. http://www.cis.upenn.edu/~cis194/spring13/
+2. http://learnyouahaskell.com/
+3. http://guide.elm-lang.org/ ( sometimes elm explains it better :) )
 
 ## Setup :
 1. Install Stack : `brew install haskell-stack` . For brew see: `http://brew.sh/`
 2. Better fork this project and `git clone git@github.com/<your-name>/hsclass`
 4. `stack build --fast --file-watch` # compiles automatically the code changes.
-3. start hacking in app/Main.hs -- do all the exercises.
+3. start hacking in app/Main.hs -- do all the exercises. Future exercises will go to src/Lession*.hs
 4. `Atom` ide is good for haskell development.
 5. Emacs users can use `intero` mode : https://commercialhaskell.github.io/intero/
 
