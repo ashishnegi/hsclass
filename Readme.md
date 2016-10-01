@@ -7,6 +7,8 @@ Following : http://www.cis.upenn.edu/~cis194/spring13/
 2. Better fork this project and `git clone git@github.com/<your-name>/hsclass`
 4. `stack build --fast --file-watch` # compiles automatically the code changes.
 3. start hacking in app/Main.hs -- do all the exercises.
+4. `Atom` ide is good for haskell development.
+5. Emacs users can use `intero` mode : https://commercialhaskell.github.io/intero/
 
 ## Workflow
 1. If you are using `stack build` command, as you write code, you will get
