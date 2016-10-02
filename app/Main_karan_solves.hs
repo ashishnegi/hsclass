@@ -65,10 +65,6 @@ numdigits cardNumber acc
 --ghci >1234 `rem` 10 `div` 1
 --4
 toDigits :: Integer -> [Integer]
-toDigits cardNumber
-  | cardNumber == 0 = []
-  | cardNumber < 0 = []
-
 toDigits cardNumber = formula cardNumber 1 []
   where 
     formula cardNumber place acc 
@@ -77,9 +73,6 @@ toDigits cardNumber = formula cardNumber 1 []
         where ndigits = numdigits cardNumber 1
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev cardNumber
-  | cardNumber == 0 = []
-  | cardNumber < 0 = []
 toDigitsRev cardNumber = formula cardNumber ndigits []
   where 
     formula cardNumber place acc 
