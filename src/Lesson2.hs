@@ -60,7 +60,15 @@ newtype NumThreads = NumThreads Int
 -- newtype gives us type helps and is performant but only one data constructor. (more about it next)
 -- data gives us type helps and multiple data constructors.
 
--- Just like template classes in haskell, we can write
+-- Imagine a list
+-- MyList --|
+--       Node Int ----> Node Int ----> Node Int ----> NullNode
+--                 >>>>>>>>>>>>>> MyList <<<<<<<<<<<<<<<<<<<<<<<
+--       NullNode
+
+data MyList = Node Int MyList | NullNode
+
+-- Just like template classes in java, in haskell we can write
 data List a = List    a      (List a) | Empty
               -- List 1  Empty
               -- List 1  (List 2 Empty)
