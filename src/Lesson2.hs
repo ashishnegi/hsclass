@@ -66,6 +66,7 @@ newtype NumThreads = NumThreads Int
 --                 >>>>>>>>>>>>>> MyList <<<<<<<<<<<<<<<<<<<<<<<
 --       NullNode
 
+-- Translate MyList directly from english to Haskell.. :)
 data MyList = Node Int MyList | NullNode
 
 -- Just like template classes in java, in haskell we can write
