@@ -1,5 +1,180 @@
 module Lesson3 where
 
+-- This is thinking in terms of Types.. :)
+
+-- Q. can you write a type for failure cases and also gives a failure message ??
+-- <your code here>
+
+-- What follows has been taken from :
+-- "Making Impossible States Impossible" by Richard Feldman
+-- https://www.youtube.com/watch?v=IcgmSRJHu_8
+
+-- so, we want to model a survey :
+-- survey has questions, and as user/teacher is going through them some of it has answers and others donot.
+-- some user / student => answering the survey
+
+type Prompt = String -- "What is 2  + 2 ?"
+type Answer = String -- "4"
+data Survey1 = Survey1 { prompts :: [ Prompt ]
+                       , answers :: [ Answer ]
+                       }
+
+-- Which prompt belong to answer ? := 1st Prompt belong to 1st Answer
+-- Length problem ..
+
+
+
+
+
+
+
+
+-- done :)
+-- but : sobody can create object of Survey1
+survey1 = Survey1 [] ["bad-state-answer"]
+
+
+
+
+
+
+
+
+
+
+-- we have a answer without a question.. :(
+-- what do we do ??
+
+-- <<< lines >>>>
+data Question = Question { prompt :: Prompt
+                         , answer :: Answer
+                         }
+
+data Survey2 = Survey2 { questions :: [ Question ] }
+-- now that problem is solved.. :)
+-- this is also what we learned in OOPs as well.
+
+
+-- now user wants to go back and forth in the questions
+
+data Survey3 = Survey3 { questions3 :: [ Question ]
+             -- i had to use questions3 (and not questions) because current version
+             -- of compiler does not allow same field names in one file.. (reason-1 at the bottom)
+                       , current    :: Question
+                       }
+
+
+survey3 = Survey3 [] (Question "q1" "a1")
+-- i.e. no questions, but current is something :(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- <<< lines >>>>
+data Survey4 = Survey4 { first         :: Question
+                       , restQuestions :: [ Question ]
+                       , currentQ      :: Question
+                       }
+-- now we can not have empty list of questions
+survey4 = Survey3 [Question "q1" "a1"] (Question "some-other-question" "a1")
+-- but now current is not in the list.. bad data..
+-- is it possible to avoid this ??
+
+-- <<< lines >>>
+data Survey = Survey { previousQuestions :: [ Question ]
+                     , currentQuestion   :: Question
+                     , nextQuestions     :: [ Question ]
+                     }
+-- all problems solved  :) :) :) !!!!
+
+-- Thinking in types.. :) :) :) !!!!
+
+-- Question :
+-- while creating the survey, you show some messages to creator
+-- creator can also delete a message.
+-- Think about type for Status messages to show on UI
+-- where you can have
+--  1. no-message
+--  2. text-message
+--  3. delete-text-message with question to restore
+-- uncomment this line.
+
+-- data StatusMessage = -- < your code here >
+
+-- Question :
+-- create a binary search tree.
+-- make it generic to take both Int and String
+
+
+-- Question :
+-- You have a todo list.
+-- You need to have a user event where he can ask you to
+-- show All tasks or Active tasks or Completed tasks.
+-- data Visibility = -- < your code here >
+
+
+-- Question :
+-- rewrite User type above to allow Anonymous users in the system.
+-- data User2 = -- < your code here >
+
+-- reasons :
+-- (reason-1) : google it out :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- (Binary Tree) has a "Node" with (Int) and (Left and Rigth "Binary Tree")
 -------              Or it can be ("Empty")
 

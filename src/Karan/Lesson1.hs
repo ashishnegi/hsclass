@@ -1,4 +1,4 @@
-module Main where
+module Karan.Lesson1 where
 
 -- How you are supposed to do this exercise ?
 -- 1) Recursion : This is a powerful thing.
@@ -35,14 +35,14 @@ sayNHello n = sayNHello' 0 n []
 myReverse :: [Integer] -> [Integer]
 myReverse []  = []
 myReverse xs = myReverseAcc xs []
-  where 
+  where
     myReverseAcc (x:xs) acc = myReverseAcc xs (x:acc)
     myReverseAcc [] acc = acc
 
 doubleAlts :: [Integer] -> [Integer]
 doubleAlts [] = []
 doubleAlts list  = doubleAltsCounter list 1
-  where 
+  where
       doubleAltsCounter (x:xs) acc
         | acc `rem` 2 == 0 = x*2:doubleAltsCounter xs (acc+1)
         | otherwise = x:doubleAltsCounter xs (acc+1)
@@ -51,7 +51,7 @@ doubleAlts list  = doubleAltsCounter list 1
 
 
 numdigits :: Integer -> Int -> Int
-numdigits cardNumber acc 
+numdigits cardNumber acc
   | cardNumber `div` (10 ^ acc) == 0 = acc
   | otherwise = numdigits cardNumber (acc+1)
 
@@ -66,16 +66,16 @@ numdigits cardNumber acc
 --4
 toDigits :: Integer -> [Integer]
 toDigits cardNumber = formula cardNumber 1 []
-  where 
-    formula cardNumber place acc 
+  where
+    formula cardNumber place acc
       | place <= ndigits = formula cardNumber (place+1) (cardNumber `rem` (10 ^ place) `div` (10 ^ (place-1)):acc)
       | otherwise = acc
         where ndigits = numdigits cardNumber 1
 
 toDigitsRev :: Integer -> [Integer]
 toDigitsRev cardNumber = formula cardNumber ndigits []
-  where 
-    formula cardNumber place acc 
+  where
+    formula cardNumber place acc
       | place > 0 = formula cardNumber (place - 1) (cardNumber `rem` (10 ^ place) `div` (10 ^ (place-1)):acc)
       | otherwise = acc
     ndigits = numdigits cardNumber 1
@@ -109,5 +109,3 @@ main = do
   putStrLn $ show $ doubleEveryOther thedigits
   putStrLn $ show $ sumDigits $ doubleEveryOther $ toDigits $ cardNumber
   putStrLn $ show $ validate cardNumber
- 
- 
