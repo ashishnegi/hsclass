@@ -22,25 +22,9 @@ data Survey1 = Survey1 { prompts :: [ Prompt ]
 -- Which prompt belong to answer ? := 1st Prompt belong to 1st Answer
 -- Length problem ..
 
-
-
-
-
-
-
-
 -- done :)
 -- but : sobody can create object of Survey1
 survey1 = Survey1 [] ["bad-state-answer"]
-
-
-
-
-
-
-
-
-
 
 -- we have a answer without a question.. :(
 -- what do we do ??
@@ -54,7 +38,6 @@ data Survey2 = Survey2 { questions :: [ Question ] }
 -- now that problem is solved.. :)
 -- this is also what we learned in OOPs as well.
 
-
 -- now user wants to go back and forth in the questions
 
 data Survey3 = Survey3 { questions3 :: [ Question ]
@@ -63,41 +46,70 @@ data Survey3 = Survey3 { questions3 :: [ Question ]
                        , current    :: Question
                        }
 
+-- questions3 :: Survey3 -> [ Question ]
+
+-- fooSurvey3 :: Survey3 -> [ Question]
+-- fooSurvey3 survey3 = questions3 survey3
+
+-- fooSurvey3 :: Survey2 -> [ Question]
+-- fooSurvey3 _ = []
 
 survey3 = Survey3 [] (Question "q1" "a1")
 -- i.e. no questions, but current is something :(
 
+-- data List = EmptyList | Node Int List
 
+-- data NonEmptyList = NonEmptyList Question [ Question ]
 
+-- data ListWithAtleastOneQuestion = ListWithAtleastOneQuestion { first :: Question
+--                                                , rest  :: [ Question ]
+--                                                }
 
-
-
-
-
-
-
-
-
-
-
-
-
+-- questions'' = NonEmptyList (Question "q1" "a1") []
+-- questions'  = ListWithAtleastOneQuestion (Question "q1" "a1") []
 
 -- <<< lines >>>>
 data Survey4 = Survey4 { first         :: Question
                        , restQuestions :: [ Question ]
                        , currentQ      :: Question
                        }
+
+-- We will NOT have (questions and answers) mismatches.. -- Question
+-- We will NOT have Empty Question list..
+
+survery4'    = Survey4 (Question "q4" "a4") [] (Question "q4" "a4")
+
+surveryBad4' = Survey4 (Question "q4" "a4") [] (Question "q5" "a5")
+-- Can we do something  ? WHERE surveryBad4' is IMPOSSIBLE ??
+
 -- now we can not have empty list of questions
 survey4 = Survey3 [Question "q1" "a1"] (Question "some-other-question" "a1")
 -- but now current is not in the list.. bad data..
 -- is it possible to avoid this ??
 
 -- <<< lines >>>
+-- Internal data structure..
 data Survey = Survey { previousQuestions :: [ Question ]
-                     , currentQuestion   :: Question
+                     , currentQuestion   ::   Question
                      , nextQuestions     :: [ Question ]
                      }
+
+-- Public api
+allQuestions :: Survey -> [Question]
+allQuestions (Survey ps c ns) =  ps ++ [c] ++ ns
+
+moveForward :: Survey -> Maybe Survey
+moveForward (Survey ps c ns) =
+  case ns of
+    [] -> Nothing
+    n:nss -> Just $ Survey (ps ++ [c]) n ns
+
+makeSurvey :: [ Question ] -> Maybe Survey
+makeSurvey questions = case questions of
+  [] -> Nothing
+  q:qs -> Just $ Survey [] q qs
+
+
 -- all problems solved  :) :) :) !!!!
 
 -- Thinking in types.. :) :) :) !!!!
@@ -108,8 +120,8 @@ data Survey = Survey { previousQuestions :: [ Question ]
 -- Think about type for Status messages to show on UI
 -- where you can have
 --  1. no-message
---  2. text-message
---  3. delete-text-message with question to restore
+--  2. text-message when question is created.
+--  3. delete-text-message with question to restore // Undo for delete
 -- uncomment this line.
 
 -- data StatusMessage = -- < your code here >
@@ -125,6 +137,11 @@ data Survey = Survey { previousQuestions :: [ Question ]
 -- show All tasks or Active tasks or Completed tasks.
 -- data Visibility = -- < your code here >
 
+newtype Task = Task String
+-- data Visibility = ??
+-- giveMeTasks :: [ Task ] -> Visibility -> [ Task ]
+-- giveMeTasks tasks visibility =
+
 
 -- Question :
 -- rewrite User type above to allow Anonymous users in the system.
@@ -134,61 +151,32 @@ data Survey = Survey { previousQuestions :: [ Question ]
 -- (reason-1) : google it out :)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- (Binary Tree) has a "Node" with (Int) and (Left and Rigth "Binary Tree")
+-- (Binary Tree) has a "Node" with (Int value) and (Left and Rigth "Binary Tree")
 -------              Or it can be ("Empty")
 
 --             BinTree
 --       Node |  Int  |
 -- BinTree <--         --> BinTree
 
--- data BinTree = ??
+data BinTree = Node { val :: Int
+                    , left :: BinTree
+                    , right :: BinTree
+                    }
+             | EmptyBinTree
 
 data IntList = Empty | Cons Int IntList deriving Show
 
+intList0 :: IntList
+intList0 = Empty
+
+intList1 :: IntList
+intList1 = Cons 1 Empty
+
+intList2 = Cons 1 (Cons 1 Empty)
+
 absAll :: IntList -> IntList
-absAll Empty       = Empty
-absAll (Cons x xs) = Cons (abs x) (absAll xs)
+absAll Empty = Empty
+absAll (Cons val list) = Cons (abs val) (absAll list)
 
 squareAll :: IntList -> IntList
 squareAll Empty       = Empty
@@ -199,7 +187,9 @@ exampleList = Cons (-1) (Cons 2 (Cons (-6) Empty))
 addOne x = x + 1
 square x = x * x
 
+-- Exercise :
 -- mapIntList = ??
+-- ?????
 -- mapIntList addOne exampleList
 -- mapIntList abs    exampleList
 -- mapIntList square exampleList
