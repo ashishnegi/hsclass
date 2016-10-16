@@ -14,3 +14,16 @@ main = hspec $ do
             bTree = L4.bTreeFromList (xs :: [ Int ])
             inOrderTraversal = L4.bTreeToList bTree
         in sort xs == inOrderTraversal
+
+  describe "deleteTopElment " $ do
+    it "should not remove more than expected elements" $
+      property $ \ ints ->
+        let xs = nub ints
+            bTree = L4.bTreeFromList (xs :: [ Int ])
+            (a, bTreeWithOneLessElement) = L4.deleteTopElement bTree
+            intsInTree = L4.bTreeToList bTreeWithOneLessElement
+
+        in case a of
+          Nothing -> (bTreeWithOneLessElement == BLeaf) && (length xs) <= 1
+          Just x ->
+            sort xs == sort (x : intsInTree)

@@ -2,6 +2,8 @@ module Lesson4 where
 
 import qualified Data.List as DL
 import Data.Maybe (fromJust)
+import Debug.Trace
+
 -- http://www.cis.upenn.edu/~cis194/spring13/lectures/04-higher-order.html
 
 -- Wholemeal programming
@@ -96,17 +98,17 @@ insertIntoBTree value tree =
         then node
         else let (l, c, r) = if curr < value
                              then -- we need to insert into rightTree and leftTree has more height -- so no need to balance
-                             if leftHeight >= rightHeight
-                             then (left, curr, (insertIntoBTree value right))
-                             else
-                               let (Just newCurr, rightWithOneLessElement) = deleteTopElement right
-                               in ((insertIntoBTree curr left), newCurr, (insertIntoBTree value rightWithOneLessElement))
+                               if leftHeight >= rightHeight
+                               then (left, curr, (insertIntoBTree value right))
+                               else
+                                 let (Just newCurr, rightWithOneLessElement) = deleteTopElement right
+                                 in ((insertIntoBTree curr left), (min value newCurr), (insertIntoBTree (max value newCurr) rightWithOneLessElement))
                              else
                                if leftHeight <= rightHeight
                                then ((insertIntoBTree value left), curr, right)
                                else
                                  let (Just newCurr, leftWithOneLessElement) = deleteTopElement left
-                                 in ((insertIntoBTree value leftWithOneLessElement), newCurr, (insertIntoBTree curr right))
+                                 in ((insertIntoBTree (min value newCurr) leftWithOneLessElement), (max value newCurr), (insertIntoBTree curr right))
              in BNode (1 + max (heightOfBTree l) (heightOfBTree r)) l c r
 
 deleteTopElement :: (Eq a, Ord a) => BalancedTree a -> (Maybe a, BalancedTree a)
@@ -130,7 +132,8 @@ deleteTopElement tree =
              (Just newCurr, lt) ->
                BNode (h - 1) lt newCurr r
 
-bTreeFromList xs = DL.foldl' (flip insertIntoBTree) BLeaf xs
+bTreeFromList xs = DL.foldl' (flip (\v t -> let tt = insertIntoBTree v t
+                                            in traceShow tt tt)) BLeaf xs
 
 bTreeWorks = bTreeFromList [2,4,10,1,-9,0,6,3]
 
