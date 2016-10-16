@@ -18,6 +18,7 @@ library
   exposed-modules:     Lesson1
                      , Lesson2
                      , Lesson3
+                     , Lesson4
                      , Karan.Lesson1
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
@@ -33,10 +34,12 @@ executable hsclass-exe
 test-suite hsclass-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  main-is:             Spec.hs
+  main-is:             Main.hs
   build-depends:       base
                      , hsclass
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                     , QuickCheck
+                     , hspec
+  ghc-options:         -threaded -rtsopts "-with-rtsopts=-N -K1k"
   default-language:    Haskell2010
 
 source-repository head

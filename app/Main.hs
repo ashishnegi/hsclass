@@ -1,3 +1,5 @@
 module Main where
 
-main = undefined
+import qualified Lesson4 as L4
+
+main = L4.test1
