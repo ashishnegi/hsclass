@@ -101,15 +101,38 @@ insertIntoBTree value tree =
                                if leftHeight >= rightHeight
                                then (left, curr, (insertIntoBTree value right))
                                else
-                                 let (Just newCurr, rightWithOneLessElement) = deleteTopElement right
+                                 let (Just newCurr, rightWithOneLessElement) = removeSmallestValueInTree right
                                  in ((insertIntoBTree curr left), (min value newCurr), (insertIntoBTree (max value newCurr) rightWithOneLessElement))
                              else
                                if leftHeight <= rightHeight
                                then ((insertIntoBTree value left), curr, right)
                                else
-                                 let (Just newCurr, leftWithOneLessElement) = deleteTopElement left
+                                 let (Just newCurr, leftWithOneLessElement) = removeLargestValueInTree left
                                  in ((insertIntoBTree (min value newCurr) leftWithOneLessElement), (max value newCurr), (insertIntoBTree curr right))
              in BNode (1 + max (heightOfBTree l) (heightOfBTree r)) l c r
+
+
+removeSmallestValueInTree :: (Eq a, Ord a) => BalancedTree a -> (Maybe a, BalancedTree a)
+removeSmallestValueInTree tree =
+  case tree of
+    BLeaf -> (Nothing, BLeaf)
+    BNode _ left c right ->
+      case left of
+        BLeaf -> (Just c, right)
+        BNode _ _ _ _ ->
+          let (c', left') = removeSmallestValueInTree left
+          in (c', BNode (1 + max (heightOfBTree left') (heightOfBTree right)) left' c right)
+
+removeLargestValueInTree :: (Eq a, Ord a) => BalancedTree a -> (Maybe a, BalancedTree a)
+removeLargestValueInTree tree =
+  case tree of
+    BLeaf -> (Nothing, BLeaf)
+    BNode _ left c right ->
+      case right of
+        BLeaf -> (Just c, left)
+        BNode _ _ _ _ ->
+          let (c', right') = removeLargestValueInTree right
+          in (c', BNode (1 + max (heightOfBTree left) (heightOfBTree right')) left c right')
 
 deleteTopElement :: (Eq a, Ord a) => BalancedTree a -> (Maybe a, BalancedTree a)
 deleteTopElement tree =
@@ -132,8 +155,7 @@ deleteTopElement tree =
              (Just newCurr, lt) ->
                BNode (h - 1) lt newCurr r
 
-bTreeFromList xs = DL.foldl' (flip (\v t -> let tt = insertIntoBTree v t
-                                            in traceShow tt tt)) BLeaf xs
+bTreeFromList xs = DL.foldl' (flip insertIntoBTree) BLeaf xs
 
 bTreeWorks = bTreeFromList [2,4,10,1,-9,0,6,3]
 
